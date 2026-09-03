@@ -12,8 +12,8 @@ with sync_playwright() as p:
 
     # username = os.environ.get("MY_APP_USER", "your_username")
     # password = os.environ.get("MY_APP_PASS", "your_password")
-    username = "170600"
-    password = "123456"
+    username = ""
+    password = ""
     page.get_by_placeholder("UserName").first.fill(username)
     page.get_by_placeholder("Password").first.fill(password)
     page.get_by_role("button", name="Log In").click()
