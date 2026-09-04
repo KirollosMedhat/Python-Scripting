@@ -1,6 +1,4 @@
-import os
 import time
-import re
 import sys
 import argparse
 import getpass
@@ -77,48 +75,6 @@ def end_break(username:str, password:str):
         page = open_timeclock_wizard_and_log_in(username, password, p)
         #page.get_by_text("End Break").click()      #commented for safety.
 
-# def adjust_period_of_time(page: Page,
-#                         daysfilterinput, 
-#                         clock_in_time, 
-#                         clock_out_time, 
-#                         start_break_time, 
-#                         end_break_time, 
-#                         note):
-#     page.locator("#sidebar a").filter(has_text="Timesheet").click()
-#     page.locator("#ddlDays").select_option(daysfilterinput)
-    
-#     page.get_by_text("Search", exact=True).click()
-    
-#     rows = page.get_by_role("row").all()
-    
-#     for row in rows[3:]:
-#         if "Notes" in row.inner_text():
-#             #print("clock in/out entry")
-#             row.get_by_text("Edit").click()
-#             page.locator("#txtstartTimeClock").click()
-#             page.locator("#txtstartTimeClock").press("ControlOrMeta+a")
-#             page.locator("#txtstartTimeClock").fill(clock_in_time)
-#             page.locator("#txtEndTimeClock").click()
-#             page.locator("#txtEndTimeClock").press("ControlOrMeta+a")
-#             page.locator("#txtEndTimeClock").fill(clock_out_time)
-#             page.locator("#txtNoteClocked").click()
-#             page.locator("#txtNoteClocked").fill(note)
-#             #page.get_by_role("button", name="Edit Time Request").click() #commented for safety.
-#             #page.pause()
-#         else:
-#             #print("break in/out entry")
-#             row.get_by_text("Edit").click()
-#             page.locator("#txtStartTimeBreak").click()
-#             page.locator("#txtStartTimeBreak").press("ControlOrMeta+a")
-#             page.locator("#txtStartTimeBreak").fill(start_break_time)
-#             page.locator("#txtEndTimeBreak").click()
-#             page.locator("#txtEndTimeBreak").press("ControlOrMeta+a")
-#             page.locator("#txtEndTimeBreak").fill(end_break_time)
-#             #page.get_by_role("button", name="Edit Time Request").click() #commented for safety.
-#             #page.pause()
-    
-   
-
 def adjust(username: str,
         password: str, 
         daysfilterinput: str,
@@ -176,36 +132,8 @@ def valid_time(value):
 
 if __name__ == "__main__":
 
-
-    # parser = argparse.ArgumentParser()
-    # subparsers = parser.add_subparsers(dest="command", required=True)
-
-    # clockin_parser = subparsers.add_parser("clockin")
-    # clockin_parser.add_argument("username")
-    # clockin_parser.add_argument("-n", "--note", default="WFH", choices=Acceptable_Notes)
-
-    # clockout_parser = subparsers.add_parser("clockout")
-    # clockout_parser.add_argument("username")
-    # clockout_parser.add_argument("-n", "--note", default="WFH", choices=Acceptable_Notes)
-
-    # breakin_parser = subparsers.add_parser("breakin")
-    # breakin_parser.add_argument("username")
-
-    # breakout_parser = subparsers.add_parser("breakout")
-    # breakout_parser.add_argument("username")
-
-    # #daysfilterinput, clock_in_time, clock_out_time, start_break_time, end_break_time, note
-    # adjust_parser = subparsers.add_parser("adjust")
-    # adjust_parser.add_argument("username")
-    # adjust_parser.add_argument("daysfilterinput", choices=DAYS_FILTERS)
-    # adjust_parser.add_argument("-cit", "--clock_in_time", default="9:00AM", type=valid_time)
-    # adjust_parser.add_argument("-cot", "--clock_out_time", default="6:00PM", type=valid_time)
-    # adjust_parser.add_argument("-bit", "--break_in_time", default="3:00PM", type=valid_time)
-    # adjust_parser.add_argument("-bot", "--break_out_time", default="4:00PM", type=valid_time)
-    # adjust_parser.add_argument("-n", "--note", default="WFH", choices=Acceptable_Notes)
-
-    # args = parser.parse_args()
     parser = argparse.ArgumentParser(description="Automates TimeClock Wizard actions: clock in/out, start/end break, or bulk-correct entries for a date range.")
+    parser.add_argument("-v", "--version", action="version", version="v1.0")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     clockin_parser = subparsers.add_parser("clockin", help="Clock in for the day")
