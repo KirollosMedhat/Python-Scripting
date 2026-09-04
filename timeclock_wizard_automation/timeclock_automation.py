@@ -77,46 +77,47 @@ def end_break(username:str, password:str):
         page = open_timeclock_wizard_and_log_in(username, password, p)
         #page.get_by_text("End Break").click()      #commented for safety.
 
-def adjust_period_of_time(page: Page,
-                        daysfilterinput, 
-                        clock_in_time, 
-                        clock_out_time, 
-                        start_break_time, 
-                        end_break_time, 
-                        note):
+# def adjust_period_of_time(page: Page,
+#                         daysfilterinput, 
+#                         clock_in_time, 
+#                         clock_out_time, 
+#                         start_break_time, 
+#                         end_break_time, 
+#                         note):
+#     page.locator("#sidebar a").filter(has_text="Timesheet").click()
+#     page.locator("#ddlDays").select_option(daysfilterinput)
     
-    page.locator("#sidebar a").filter(has_text="Timesheet").click()
-    page.locator("#ddlDays").select_option(daysfilterinput)
+#     page.get_by_text("Search", exact=True).click()
     
-    page.get_by_text("Search", exact=True).click()
+#     rows = page.get_by_role("row").all()
     
-    rows = page.get_by_role("row").all()
+#     for row in rows[3:]:
+#         if "Notes" in row.inner_text():
+#             #print("clock in/out entry")
+#             row.get_by_text("Edit").click()
+#             page.locator("#txtstartTimeClock").click()
+#             page.locator("#txtstartTimeClock").press("ControlOrMeta+a")
+#             page.locator("#txtstartTimeClock").fill(clock_in_time)
+#             page.locator("#txtEndTimeClock").click()
+#             page.locator("#txtEndTimeClock").press("ControlOrMeta+a")
+#             page.locator("#txtEndTimeClock").fill(clock_out_time)
+#             page.locator("#txtNoteClocked").click()
+#             page.locator("#txtNoteClocked").fill(note)
+#             #page.get_by_role("button", name="Edit Time Request").click() #commented for safety.
+#             #page.pause()
+#         else:
+#             #print("break in/out entry")
+#             row.get_by_text("Edit").click()
+#             page.locator("#txtStartTimeBreak").click()
+#             page.locator("#txtStartTimeBreak").press("ControlOrMeta+a")
+#             page.locator("#txtStartTimeBreak").fill(start_break_time)
+#             page.locator("#txtEndTimeBreak").click()
+#             page.locator("#txtEndTimeBreak").press("ControlOrMeta+a")
+#             page.locator("#txtEndTimeBreak").fill(end_break_time)
+#             #page.get_by_role("button", name="Edit Time Request").click() #commented for safety.
+#             #page.pause()
     
-    for row in rows[3:]:
-        if "Notes" in row.inner_text():
-            #print("clock in/out entry")
-            row.get_by_text("Edit").click()
-            page.locator("#txtstartTimeClock").click()
-            page.locator("#txtstartTimeClock").press("ControlOrMeta+a")
-            page.locator("#txtstartTimeClock").fill(clock_in_time)
-            page.locator("#txtEndTimeClock").click()
-            page.locator("#txtEndTimeClock").press("ControlOrMeta+a")
-            page.locator("#txtEndTimeClock").fill(clock_out_time)
-            page.locator("#txtNoteClocked").click()
-            page.locator("#txtNoteClocked").fill(note)
-            #page.get_by_role("button", name="Edit Time Request").click() #commented for safety.
-            #page.pause()
-        else:
-            #print("break in/out entry")
-            row.get_by_text("Edit").click()
-            page.locator("#txtStartTimeBreak").click()
-            page.locator("#txtStartTimeBreak").press("ControlOrMeta+a")
-            page.locator("#txtStartTimeBreak").fill(start_break_time)
-            page.locator("#txtEndTimeBreak").click()
-            page.locator("#txtEndTimeBreak").press("ControlOrMeta+a")
-            page.locator("#txtEndTimeBreak").fill(end_break_time)
-            #page.get_by_role("button", name="Edit Time Request").click() #commented for safety.
-            #page.pause()
+   
 
 def adjust(username: str,
         password: str, 
@@ -131,9 +132,41 @@ def adjust(username: str,
     
     with sync_playwright() as p:
         page = open_timeclock_wizard_and_log_in(username, password, p)
-        #clock_in(page, note) #SUCCEEDED
-        adjust_period_of_time(page, daysfilterinput, clock_in_time, clock_out_time, start_break_time, end_break_time, note)
-        page.pause()
+
+        # adjust_period_of_time(page, daysfilterinput, clock_in_time, clock_out_time, start_break_time, end_break_time, note)
+
+        page.locator("#sidebar a").filter(has_text="Timesheet").click()
+        page.locator("#ddlDays").select_option(daysfilterinput)
+        
+        page.get_by_text("Search", exact=True).click()
+        
+        rows = page.get_by_role("row").all()
+        
+        for row in rows[3:]:
+            if "Notes" in row.inner_text():
+                #print("clock in/out entry")
+                row.get_by_text("Edit").click()
+                page.locator("#txtstartTimeClock").click()
+                page.locator("#txtstartTimeClock").press("ControlOrMeta+a")
+                page.locator("#txtstartTimeClock").fill(clock_in_time)
+                page.locator("#txtEndTimeClock").click()
+                page.locator("#txtEndTimeClock").press("ControlOrMeta+a")
+                page.locator("#txtEndTimeClock").fill(clock_out_time)
+                page.locator("#txtNoteClocked").click()
+                page.locator("#txtNoteClocked").fill(note)
+                #page.get_by_role("button", name="Edit Time Request").click() #commented for safety.
+                page.pause()
+            else:
+                #print("break in/out entry")
+                row.get_by_text("Edit").click()
+                page.locator("#txtStartTimeBreak").click()
+                page.locator("#txtStartTimeBreak").press("ControlOrMeta+a")
+                page.locator("#txtStartTimeBreak").fill(start_break_time)
+                page.locator("#txtEndTimeBreak").click()
+                page.locator("#txtEndTimeBreak").press("ControlOrMeta+a")
+                page.locator("#txtEndTimeBreak").fill(end_break_time)
+                #page.get_by_role("button", name="Edit Time Request").click() #commented for safety.
+                page.pause()
 
 def valid_time(value):
     datetime.strptime(value, "%I:%M%p")  # raises ValueError if invalid
@@ -143,22 +176,17 @@ def valid_time(value):
 
 if __name__ == "__main__":
 
-    # # print(sys.argv[0])
-    # # print(sys.argv[1])
-    # # print(sys.argv[2])
-    # # print(sys.argv[3])
+
     # parser = argparse.ArgumentParser()
     # subparsers = parser.add_subparsers(dest="command", required=True)
 
     # clockin_parser = subparsers.add_parser("clockin")
     # clockin_parser.add_argument("username")
-    # clockin_parser.add_argument("--note", default="WFH", choices=Acceptable_Notes)
+    # clockin_parser.add_argument("-n", "--note", default="WFH", choices=Acceptable_Notes)
 
     # clockout_parser = subparsers.add_parser("clockout")
     # clockout_parser.add_argument("username")
-    # clockout_parser.add_argument("--note", default="WFH", choices=Acceptable_Notes)
-
-
+    # clockout_parser.add_argument("-n", "--note", default="WFH", choices=Acceptable_Notes)
 
     # breakin_parser = subparsers.add_parser("breakin")
     # breakin_parser.add_argument("username")
@@ -176,47 +204,86 @@ if __name__ == "__main__":
     # adjust_parser.add_argument("-bot", "--break_out_time", default="4:00PM", type=valid_time)
     # adjust_parser.add_argument("-n", "--note", default="WFH", choices=Acceptable_Notes)
 
-
-    
-
     # args = parser.parse_args()
+    parser = argparse.ArgumentParser(description="Automates TimeClock Wizard actions: clock in/out, start/end break, or bulk-correct entries for a date range.")
+    subparsers = parser.add_subparsers(dest="command", required=True)
 
-    # # x = datetime.strptime("9:00AM", "%I:%M%p")
-    # # y = datetime.strptime("09:00AM", "%I:%M%p")
-    # # E = datetime.strptime("19:00AM", "%I:%M%p")
+    clockin_parser = subparsers.add_parser("clockin", help="Clock in for the day")
+    clockin_parser.add_argument("username", help="Your TimeClock Wizard username")
+    clockin_parser.add_argument(
+        "-n", "--note", default="WFH", choices=Acceptable_Notes,
+        help="Note attached to the clock-in entry (default: WFH)"
+    )
 
-    # # print(f"this should be okay: {x}")
-    # # print(f"this should be okay: {y}")
-    # # print(f"this should be an error: {E}")
+    clockout_parser = subparsers.add_parser("clockout", help="Clock out for the day")
+    clockout_parser.add_argument("username", help="Your TimeClock Wizard username")
+    clockout_parser.add_argument(
+        "-n", "--note", default="WFH", choices=Acceptable_Notes,
+        help="Note attached to the clock-out entry (default: WFH)"
+    )
 
+    breakin_parser = subparsers.add_parser("breakin", help="Start a break")
+    breakin_parser.add_argument("username", help="Your TimeClock Wizard username")
 
+    breakout_parser = subparsers.add_parser("breakout", help="End a break")
+    breakout_parser.add_argument("username", help="Your TimeClock Wizard username")
 
+    adjust_parser = subparsers.add_parser(
+        "adjust", help="Bulk-correct clock and break entries for a date range")
+    adjust_parser.add_argument("username", help="Your TimeClock Wizard username")
 
+    adjust_parser.add_argument(
+    "daysfilterinput", choices=DAYS_FILTERS,
+    help=(
+        "Date range whose entries will be corrected. Options: TODAY, YESTERDAY, "
+        "CURRENTWEEK, PREVIOUSWEEK, CURRENTMONTH, PREVIOUSMONTH, LAST30DAYS, "
+        "LAST60DAYS, LAST90DAYS, CURRENTYEAR, PREVIOUSYEAR")
+    )
+    adjust_parser.add_argument(
+        "-cit", "--clock_in_time", default="9:00AM", type=valid_time,
+        help="Clock-in time to be set for every entry in chosen range, 12-hour format e.g. 9:00AM (default: 9:00AM)"
+    )
+    adjust_parser.add_argument(
+        "-cot", "--clock_out_time", default="6:00PM", type=valid_time,
+        help="Clock-out time to be set for every entry in chosen range, 12-hour format e.g. 6:00PM (default: 6:00PM)"
+    )
+    adjust_parser.add_argument(
+        "-bit", "--break_in_time", default="3:00PM", type=valid_time,
+        help="Break-start time to be set for every entry in chosen range, 12-hour format e.g. 3:00PM (default: 3:00PM)"
+    )
+    adjust_parser.add_argument(
+        "-bot", "--break_out_time", default="4:00PM", type=valid_time,
+        help="Break-end time to be set for every entry in chosen range, 12-hour format e.g. 4:00PM (default: 4:00PM)"
+    )
+    adjust_parser.add_argument(
+        "-n", "--note", default="WFH", choices=Acceptable_Notes,
+        help=(
+            "Note attached to each corrected clock entry."
+            "Options: WFH, NASA, APJ, Public Holiday Worked (default: WFH)"
+        )
+    )
 
-    # print(args.username)
-    # print(args.clock_in_time)
-    # print(args.clock_out_time)
-    # print(args.break_in_time)
-    # print(args.break_out_time)
-    # print(args.note)
+    args = parser.parse_args()
 
-    # password = getpass.getpass("Password: ")
-
-
-
-
-
-    daysfilterinput = normalize(sys.argv[3])
-    if daysfilterinput not in DAYS_FILTERS:
-        print(f"'{daysfilterinput}' is not valid. Choose from: {DAYS_FILTERS}")
-        sys.exit(1)
+    password = getpass.getpass("Password: ")
 
 
     start_time = time.perf_counter()
-    #main(sys.argv[1],sys.argv[2],daysfilterinput)
-    #clock_in(sys.argv[1],sys.argv[2],daysfilterinput)
-    end_time = time.perf_counter()
 
-    execution_time = end_time - start_time
+    if args.command == "clockin":
+        clock_in(args.username, password, args.note)
+    elif args.command == "clockout":
+        clock_out(args.username, password, args.note)
+    elif args.command == "breakin":
+        start_break(args.username, password)
+    elif args.command == "breakout":
+        end_break(args.username, password)
+    elif args.command == "adjust":
+        adjust(args.username, password, args.daysfilterinput,
+           args.clock_in_time, args.clock_out_time,
+           args.break_in_time, args.break_out_time, args.note)
+
+    end_time = time.perf_counter()
+    execution_time = end_time - start_time    
     print(f"\n\nExecuted in {execution_time:.4f} seconds.\n\n")
 
