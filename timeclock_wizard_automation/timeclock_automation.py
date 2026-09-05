@@ -61,7 +61,10 @@ def open_timeclock_wizard_and_log_in(username: str, password: str, p: Playwright
             raise
 
     page = browser.new_page()
-    page.goto("https://apps.timeclockwizard.com/Login?subDomain=Siliconegypt")
+    # TODO: Left blank intentionally. Fill in your own TimeClock Wizard login URL here.
+    # Format: https://apps.timeclockwizard.com/Login?subDomain=<YourCompanySubdomain>
+    # Example: https://apps.timeclockwizard.com/Login?subDomain=xyzcompany
+    page.goto("")
     page.get_by_placeholder("UserName").first.fill(username)
     page.get_by_placeholder("Password").first.fill(password)
     page.wait_for_load_state("networkidle")       #This line because the script broke when i removed slow_mo(the login button click wasn't acutally clicked, probably too fast for the website.)
