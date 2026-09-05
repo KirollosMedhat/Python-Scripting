@@ -1,6 +1,6 @@
 # TimeClock Wizard Automation
 
-A command-line tool that automates repetitive [TimeClock Wizard](https://apps.timeclockwizard.com/) actions — clocking in/out, starting/ending a break, and bulk-correcting existing timesheet entries for a date range — using [Playwright](https://playwright.dev/python/) browser automation.
+A command-line tool that automates repetitive [TimeClock Wizard] actions — clocking in/out, starting/ending a break, and bulk-correcting existing timesheet entries for a date range — using [Playwright](https://playwright.dev/python/) browser automation.
 
 ## What it does
 
