@@ -15,5 +15,6 @@ uv sync
 | Script | Description |
 |---|---|
 | [directory_sorting](./directory_sorting/) | Sorts files in a directory into subfolders based on file extension |
+| [timeclock_wizard_automation](./timeclock_wizard_automation/) | Automates TimeClock Wizard actions — clock in/out, start/end break, and bulk-correct timesheet entries — via browser automation |
 
 See each script's own `README.md` for detailed usage instructions.
