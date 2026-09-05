@@ -2,8 +2,9 @@ import time
 import sys
 import argparse
 import getpass
+import subprocess
 from datetime import datetime
-from playwright.sync_api import sync_playwright, Playwright, Page, TimeoutError as PlaywrightTimeoutError
+from playwright.sync_api import sync_playwright, Error, Playwright, Page, TimeoutError as PlaywrightTimeoutError
 
 DAYS_FILTERS = {
     "TODAY",
@@ -32,7 +33,16 @@ def normalize(text: str) -> str:
 
 def open_timeclock_wizard_and_log_in(username: str, password: str, p: Playwright) -> Page:
     #browser = p.chromium.launch(headless=False, slow_mo=500)
-    browser = p.chromium.launch(headless=False)
+    try:
+        browser = p.chromium.launch(headless=False)
+    except Error as e:
+        if "Executable doesn't exist" in str(e):
+            print("Setting up browser for first use, please wait...")
+            subprocess.run(["playwright", "install", "chromium"], check=True)
+            browser = p.chromium.launch(headless=False)
+        else:
+            raise
+
     page = browser.new_page()
     page.goto("https://apps.timeclockwizard.com/Login?subDomain=Siliconegypt")
     page.get_by_placeholder("UserName").first.fill(username)
