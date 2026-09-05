@@ -3,6 +3,7 @@ import sys
 import argparse
 import getpass
 import subprocess
+import os
 from datetime import datetime
 from playwright.sync_api import sync_playwright, Error, Playwright, Page, TimeoutError as PlaywrightTimeoutError
 
@@ -33,12 +34,28 @@ def normalize(text: str) -> str:
 
 def open_timeclock_wizard_and_log_in(username: str, password: str, p: Playwright) -> Page:
     #browser = p.chromium.launch(headless=False, slow_mo=500)
+    # try:
+    #     browser = p.chromium.launch(headless=False)
+    # except Error as e:
+    #     if "Executable doesn't exist" in str(e):
+    #         print("Setting up browser for first use, please wait...")
+    #         #subprocess.run(["playwright", "install", "chromium"], check=True)
+    #         subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=True)
+    #         browser = p.chromium.launch(headless=False)
+    #     else:
+    #         raise
+
     try:
         browser = p.chromium.launch(headless=False)
     except Error as e:
         if "Executable doesn't exist" in str(e):
             print("Setting up browser for first use, please wait...")
-            subprocess.run(["playwright", "install", "chromium"], check=True)
+            from playwright.__main__ import main as playwright_main
+            sys.argv = ["playwright", "install", "chromium"]
+            try:
+                playwright_main()
+            except SystemExit:
+                pass
             browser = p.chromium.launch(headless=False)
         else:
             raise
@@ -141,6 +158,10 @@ def valid_time(value):
 
 
 if __name__ == "__main__":
+
+    if getattr(sys, "frozen", False):
+        #print("DEBUG: frozen detected, setting browsers path")
+        os.environ["PLAYWRIGHT_BROWSERS_PATH"] = os.path.join(os.environ["LOCALAPPDATA"], "ms-playwright")
 
     parser = argparse.ArgumentParser(description="Automates TimeClock Wizard actions: clock in/out, start/end break, or bulk-correct entries for a date range.")
     parser.add_argument("-v", "--version", action="version", version="v1.0")
